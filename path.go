@@ -8,11 +8,11 @@ import (
 )
 
 type path struct {
-	// Pattern values parsed from pattern string
+	// Variable subpath names parsed from pattern string
 	//
 	pattern []string
 
-	// Path values parsed from http request
+	// Subpath values parsed from http request
 	//
 	request []string
 
@@ -23,7 +23,7 @@ type path struct {
 	//
 	vars map[string]string
 
-	// Query values obtained from the http request.
+	// Query values obtained from http request.
 	//
 	// Values are retrieved by calling the Query(key string) method.
 	//
