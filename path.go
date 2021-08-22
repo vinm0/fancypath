@@ -18,8 +18,11 @@ type path struct {
 // NewPath parses the request url against the given pattern.
 // Returns a pointer to the parsed path object.
 //
-// Pattern: Identify variables within the pattern string by
-// enclosing them in curly braces, "{var}"
+// Pattern: The pattern always begins with the root slash.
+// Identify variable subpaths within the pattern by
+// enclosing them in curly braces, "{varName}". All other
+// subpaths are ignored. Each subpath may contain only one
+// variable and the variable must span the entire subpath.
 //
 // Example: "https://example.com/blog/random/first-post/"
 //
@@ -31,6 +34,10 @@ type path struct {
 //		p.var("slug") ==> "first-post"
 //		p.var("id") ==> ""
 func Newpath(r *http.Request, pattern string) *path {
+	if !strings.HasPrefix(pattern, "/") {
+		pattern = "/" + pattern
+	}
+
 	p := path{}
 	p.parsePattern(pattern)
 	p.parseReq(r.URL.Path)
