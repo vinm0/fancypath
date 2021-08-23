@@ -141,6 +141,7 @@ func (p *path) mapVars() {
 		p.vars[k] = p.request[i]
 	}
 
+	delete(p.vars, "")
 	delete(p.vars, "*")
 }
 
@@ -148,6 +149,8 @@ func (p *path) mapVars() {
 // parse is a helper function used to load the path slice fields
 //
 func parse(s *[]string, path string) {
+	path = strings.TrimSuffix(path, "/")
+
 	// Exclude first element, always empty
 	*s = strings.Split(path, "/")[1:]
 }
