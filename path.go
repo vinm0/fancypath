@@ -41,7 +41,7 @@ type path struct {
 
 // NewPath parses the request url against the given pattern.
 //
-// Pattern: The pattern always begins with the root slash.
+// pattern: The pattern always begins with the root slash.
 // Identify variable subpaths within the pattern by providing
 // a term in the subpath. Each subpath may contain only one
 // variable and the variable must span the entire subpath.

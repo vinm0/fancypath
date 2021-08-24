@@ -7,52 +7,19 @@ import (
 	"testing"
 )
 
+// Implement io.Reader for dummy http.Request
 type ReqReader struct{}
 
 func (rr ReqReader) Read(p []byte) (n int, err error) {
 	return 0, nil
 }
 
-// func TestParse(t *testing.T) {
-// 	r := httptest.NewRequest(http.MethodGet, "/", ReqReader{})
-// 	r1 := httptest.NewRequest(http.MethodGet, "/blog", ReqReader{})
-// 	r2 := httptest.NewRequest(http.MethodGet, "/blog/new", ReqReader{})
-// 	r3 := httptest.NewRequest(http.MethodGet, "/blog/new/article", ReqReader{})
-// 	r4 := httptest.NewRequest(http.MethodGet, "/blog/new/article/42", ReqReader{})
-
-// 	var tests = []struct {
-// 		s    *[]string
-// 		r    *http.Request
-// 		path string
-// 	}{
-// 		{&[]string{}, r, ""},
-// 		{&[]string{}, r, "/"},
-// 		{&[]string{}, r, "/*"},
-// 		{&[]string{}, r, "/*/action"},
-// 		{&[]string{}, r, "/category/action/item/id"},
-// 		{&[]string{}, r1, ""},
-// 		{&[]string{}, r1, "/"},
-// 		{&[]string{}, r1, "/*"},
-// 		{&[]string{}, r1, "/*/action"},
-// 		{&[]string{}, r1, "/category/action/item/id"},
-// 		{&[]string{}, r2, ""},
-// 		{&[]string{}, r2, "/"},
-// 		{&[]string{}, r2, "/*"},
-// 		{&[]string{}, r2, "/*/action"},
-// 		{&[]string{}, r2, "/category/action/item/id"},
-// 		{&[]string{}, r3, ""},
-// 		{&[]string{}, r3, "/"},
-// 		{&[]string{}, r3, "/*"},
-// 		{&[]string{}, r3, "/*/action"},
-// 		{&[]string{}, r3, "/category/action/item/id"},
-// 		{&[]string{}, r4, ""},
-// 		{&[]string{}, r4, "/"},
-// 		{&[]string{}, r4, "/*"},
-// 		{&[]string{}, r4, "/*/action"},
-// 		{&[]string{}, r4, "/category/action/item/id"},
-// 	}
-// }
-
+// TestVar will create a new *path using NewPath.
+// NewPath parses the request path and pattern,
+// and maps the pattern variable names to the path names.
+// This map is used when calling Var.
+//
+// Var passes tests only if NewPath succeeds.
 func TestVar(t *testing.T) {
 	p := Newpath(httptest.NewRequest(http.MethodGet, "/", ReqReader{}), "//*/category/id")
 	p1 := Newpath(httptest.NewRequest(http.MethodGet, "/blog", ReqReader{}), "//*/category/id")
