@@ -21,12 +21,12 @@ func (rr ReqReader) Read(p []byte) (n int, err error) {
 //
 // Var passes tests only if NewPath succeeds.
 func TestVar(t *testing.T) {
-	p := Newpath(httptest.NewRequest(http.MethodGet, "/", ReqReader{}), "//*/category/id")
-	p1 := Newpath(httptest.NewRequest(http.MethodGet, "/blog", ReqReader{}), "//*/category/id")
-	p2 := Newpath(httptest.NewRequest(http.MethodGet, "/blog/new", ReqReader{}), "//*/category/id")
-	p3 := Newpath(httptest.NewRequest(http.MethodGet, "/blog/new/article", ReqReader{}), "//*/category/id")
-	p4 := Newpath(httptest.NewRequest(http.MethodGet, "/blog/new/article/42", ReqReader{}), "//*/category/id")
-	p5 := Newpath(httptest.NewRequest(http.MethodGet, "/blog/new/article/42/extra", ReqReader{}), "//*/category/id")
+	p := New(httptest.NewRequest(http.MethodGet, "/", ReqReader{}), "//*/category/id")
+	p1 := New(httptest.NewRequest(http.MethodGet, "/blog", ReqReader{}), "//*/category/id")
+	p2 := New(httptest.NewRequest(http.MethodGet, "/blog/new", ReqReader{}), "//*/category/id")
+	p3 := New(httptest.NewRequest(http.MethodGet, "/blog/new/article", ReqReader{}), "//*/category/id")
+	p4 := New(httptest.NewRequest(http.MethodGet, "/blog/new/article/42", ReqReader{}), "//*/category/id")
+	p5 := New(httptest.NewRequest(http.MethodGet, "/blog/new/article/42/extra", ReqReader{}), "//*/category/id")
 
 	var tests = []struct {
 		p    *path

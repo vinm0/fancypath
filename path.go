@@ -33,13 +33,13 @@ type path struct {
 	//
 	// Example: "https://example.com/blog/article/#42"
 	//
-	//		p := NewPath(r, "")
+	//		p := New(r, "")
 	//		p.Frag == "42"  // true
 	//
 	Frag string
 }
 
-// NewPath parses the request url against the given pattern.
+// New parses the request url against the given pattern.
 //
 // pattern: The pattern always begins with the root slash.
 // Identify variable subpaths within the pattern by providing
@@ -52,14 +52,14 @@ type path struct {
 //
 //		// Pattern always begins from the root slash
 //		pattern := "/*/category/slug/id"
-//		p := NewPath(r, pattern)
+//		p := New(r, pattern)
 //
 //		p.Var("category") == "random" // true
 //		p.Var("slug") == "first-post" // true
 //		p.Var("id") == "" // true
 //		p.Var("*") == "" // true
 //
-func Newpath(r *http.Request, pattern string) *path {
+func New(r *http.Request, pattern string) *path {
 	// Must have root slash
 	if !strings.HasPrefix(pattern, "/") {
 		pattern = "/" + pattern
@@ -84,7 +84,7 @@ func Newpath(r *http.Request, pattern string) *path {
 // Example: "https://example.com/edit/article/42"
 //
 // 		pattern = "/*/category/id"
-//		p := NewPath(r, pattern)
+//		p := New(r, pattern)
 //
 //		p.Var("category") == "article" // true
 //		p.Var("id")	== "42" // true
@@ -103,7 +103,7 @@ func (p *path) Var(key string) (val string) {
 // Example: "https://example.com/edit/article/42"
 //
 // 		pattern = "/*/category/id"
-//		p := NewPath(r, pattern)
+//		p := New(r, pattern)
 //
 //		num, ok := p.VarInt("id")		// num == 42, ok == true
 //		num, ok := p.VarInt("category") // num == 0, ok == false
