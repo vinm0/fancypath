@@ -45,7 +45,8 @@ type path struct {
 // Identify variable subpaths within the pattern by providing
 // a term in the subpath. Each subpath may contain only one
 // variable and the variable must span the entire subpath.
-// To ignore a subpath, substitute a subpath with an astrisk, "*".
+// To ignore a subpath, substitute a subpath with an astrisk,
+// "/*/", or leave the subpath empty, "//".
 //
 // Example: "https://example.com/blog/random/first-post/"
 //
@@ -75,7 +76,10 @@ func Newpath(r *http.Request, pattern string) *path {
 	return &p
 }
 
-// Var returns the value corresponding to the path variable
+// Var returns the subpath in the http request path corresponding
+// to the variable named in the pattern.
+//
+// Note: Astrisks and empty subpaths are ignored.
 //
 // Example: "https://example.com/edit/article/42"
 //
@@ -90,11 +94,20 @@ func (p *path) Var(key string) (val string) {
 	return p.vars[key]
 }
 
-// VarInt returns an int representation of val.
+// VarInt returns the int converted from the http request subpath.
 // ok returns true on success. Otherwise, false.
 //
-// val returns 0 if the corresponding value cannot
+// val returns 0 in case the corresponding value cannot
 // be converted to an int or does not exist.
+//
+// Example: "https://example.com/edit/article/42"
+//
+// 		pattern = "/*/category/id"
+//		p := NewPath(r, pattern)
+//
+//		num, ok := p.VarInt("id")		// num == 42, ok == true
+//		num, ok := p.VarInt("category") // num == 0, ok == false
+//		num, ok := p.VarInt("*")		// num == 0, ok == false
 //
 func (p *path) VarInt(key string) (val int, ok bool) {
 	val, err := strconv.Atoi(p.vars[key])
@@ -141,6 +154,7 @@ func (p *path) mapVars() {
 		p.vars[k] = p.request[i]
 	}
 
+	// ignored placeholders in pattern string
 	delete(p.vars, "")
 	delete(p.vars, "*")
 }
@@ -149,6 +163,7 @@ func (p *path) mapVars() {
 // parse is a helper function used to load the path slice fields
 //
 func parse(s *[]string, path string) {
+	// Prevent extra slice element at the end
 	path = strings.TrimSuffix(path, "/")
 
 	// Exclude first element, always empty
