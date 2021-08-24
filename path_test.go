@@ -99,9 +99,10 @@ func TestParse(t *testing.T) {
 
 		{&[]string{}, "/*", 1},
 		{&[]string{}, "/*/", 1},
-		{&[]string{}, "/*//", 2},
+		{&[]string{}, "/  * /", 1},
+		{&[]string{}, "/*/  /", 2},
 		{&[]string{}, "/*//category", 3},
-		{&[]string{}, "/*//category/id", 4},
+		{&[]string{}, "/ *//category/id", 4},
 	}
 
 	for _, tt := range tests {
