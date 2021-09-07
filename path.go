@@ -1,4 +1,4 @@
-package main
+package fancypath
 
 import (
 	"net/http"
@@ -33,7 +33,7 @@ type path struct {
 	//
 	// Example: "https://example.com/blog/article/#42"
 	//
-	//		p := New(r, "")
+	//		p := fancypaths.New(r, "")
 	//		p.Frag == "42"  // true
 	//
 	Frag string
@@ -52,12 +52,12 @@ type path struct {
 //
 //		// Pattern always begins from the root slash
 //		pattern := "/*/category/slug/id"
-//		p := New(r, pattern)
+//		p := fancypaths.New(r, pattern)
 //
 //		p.Var("category") == "random" // true
 //		p.Var("slug") == "first-post" // true
 //		p.Var("id") == "" // true
-//		p.Var("*") == "" // true
+//		p.Var("*") == "" // true, astrisks are ignored
 //
 func New(r *http.Request, pattern string) *path {
 	// Must have root slash
@@ -84,11 +84,11 @@ func New(r *http.Request, pattern string) *path {
 // Example: "https://example.com/edit/article/42"
 //
 // 		pattern = "/*/category/id"
-//		p := New(r, pattern)
+//		p := fancypaths.New(r, pattern)
 //
 //		p.Var("category") == "article" // true
 //		p.Var("id")	== "42" // true
-//		p.Var("*") == "" // true
+//		p.Var("*") == "" // true, astrisks are ignored
 //
 func (p *path) Var(key string) (val string) {
 	return p.vars[key]
@@ -103,7 +103,7 @@ func (p *path) Var(key string) (val string) {
 // Example: "https://example.com/edit/article/42"
 //
 // 		pattern = "/*/category/id"
-//		p := New(r, pattern)
+//		p := fancypaths.New(r, pattern)
 //
 //		num, ok := p.VarInt("id")		// num == 42, ok == true
 //		num, ok := p.VarInt("category") // num == 0, ok == false
