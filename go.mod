@@ -1,3 +1,3 @@
-module github.com/vinm0/fancy-paths
+module github.com/vinm0/fancypath
 
 go 1.17
